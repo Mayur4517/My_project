@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Enrollments</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Student Dashboard - Manage Enrollments</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <!-- <li><a href="/departments">Manage Departments</a></li>
+            <li><a href="/instructors">Manage Instructors</a></li> -->
+            <li><a href="/students">Manage Students</a></li>
+            <li><a href="/courses">Manage Courses</a></li>
+            <li><a href="/enrollments">Manage Enrollments</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Manage Enrollments</h2>
+            <div class="form-container">
+                <h3>Add New Enrollment</h3>
+                <form action="/enrollments/add" method="POST" id="addEnrollmentForm">
+                    <label for="student">Select Student:</label>
+                    <select id="student" name="student_id" required>
+                        <option value="">Select Student</option>
+                        <% students.forEach(student => { %>
+                            <option value="<%= student.id %>"><%= student.name %></option>
+                        <% }); %>
+                    </select>
+
+                    <label for="course">Select Course:</label>
+                    <select id="course" name="course_id" required>
+                        <option value="">Select Course</option>
+                        <% courses.forEach(course => { %>
+                            <option value="<%= course.id %>"><%= course.name %></option>
+                        <% }); %>
+                    </select>
+
+                    <button type="submit">Add Enrollment</button>
+                </form>
+            </div>
+
+            <div class="enrollment-list-container">
+                <h3>Existing Enrollments</h3>
+                <% if (enrollments.length > 0) { %>
+                    <table class="enrollment-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Course Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% enrollments.forEach(enrollment => { %>
+                                <tr>
+                                    <td><%= enrollment.student_name %></td>
+                                    <td><%= enrollment.course_name %></td>
+                                    <td>
+                                        <form action="/enrollments/delete" method="POST" class="delete-form">
+                                            <input type="hidden" name="student_id" value="<%= enrollment.student_id %>">
+                                            <input type="hidden" name="course_id" value="<%= enrollment.course_id %>">
+                                            <button class="delete" type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <p>No enrollments found. Add a new enrollment above.</p>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <script src="/scripts_enrollments.js"></script>
+    <script src="/server.js"></script>
+</body>
+</html>

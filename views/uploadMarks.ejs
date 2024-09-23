@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Marks</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Instructor Dashboard - Upload Marks</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/students">Manage Students</a></li>
+            <li><a href="/courses">Manage Courses</a></li>
+            <li><a href="/marks">View Marks</a></li>
+            <li><a href="/upload-marks">Upload Marks</a></li> <!-- New upload marks section -->
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Upload Marks for Students</h2>
+            <div class="form-container">
+                <form action="/marks/upload" method="POST">
+                    <label for="student">Select Student:</label>
+                    <select id="student" name="student_id" required>
+                        <% students.forEach(student => { %>
+                        <option value="<%= student.id %>"><%= student.name %></option>
+                        <% }); %>
+                    </select>
+
+                    <label for="course">Select Course:</label>
+                    <select id="course" name="course_id" required>
+                        <% courses.forEach(course => { %>
+                        <option value="<%= course.id %>"><%= course.name %></option>
+                        <% }); %>
+                    </select>
+
+                    <label for="marks">Enter Marks:</label>
+                    <input type="number" id="marks" name="marks" placeholder="Enter Marks" required>
+
+                    <button type="submit">Upload Marks</button>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

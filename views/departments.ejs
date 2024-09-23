@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Departments</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard - Manage Departments</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/departments">Manage Departments</a></li>
+            <li><a href="/instructors">Manage Instructors</a></li>
+            <li><a href="/students">Manage Students</a></li>
+            <li><a href="/courses">Manage Courses</a></li>
+            
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Manage Departments</h2>
+            <div class="form-container">
+                <h3>Add New Department</h3>
+                <form action="/departments/add" method="POST" id="addDepartmentForm">
+                    <label for="departmentName">Department Name:</label>
+                    <input type="text" id="departmentName" name="name" placeholder="Department Name" required>
+                    <button type="submit">Add Department</button>
+                </form>
+            </div>
+
+            <div class="department-list-container">
+                <h3>Existing Departments</h3>
+                <% if (departments.length > 0) { %>
+                    <table class="department-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Department Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% departments.forEach(department => { %>
+                                <tr>
+                                    <td><%= department.id %></td>
+                                    <td><%= department.name %></td>
+                                    <td>
+                                        <form action="/departments/delete/<%= department.id %>" method="POST" class="delete-form">
+                                            <button class="delete" type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <p>No departments found. Add a new department above.</p>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <script src="/scripts_departments.js"></script>
+    <script src="/server.js"></script>
+</body>
+</html>

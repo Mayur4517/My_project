@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Instructors</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* Add styles for the update form modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 4px;
+        }
+
+        .modal-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard - Manage Instructors</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/instructors">Manage Instructors</a></li>
+            <li><a href="/students">Manage Students</a></li>
+            <li><a href="/courses">Manage Courses</a></li>
+            <li><a href="/uploadMarks">Upload Marks</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Manage Instructors</h2>
+            <div class="form-container">
+                <h3>Add New Instructor</h3>
+                <form action="/instructors/add" method="POST" id="addInstructorForm">
+                    <label for="instructor-name">Instructor Name:</label>
+                    <input type="text" id="instructor-name" name="name" placeholder="Instructor Name" required>
+
+                    <label for="department">Select Department:</label>
+                    <select id="department" name="department_id" required>
+                        <option value="">Select Department</option>
+                        <% departments.forEach(department => { %>
+                            <option value="<%= department.id %>"><%= department.name %></option>
+                        <% }); %>
+                    </select>
+
+                    <button type="submit">Add Instructor</button>
+                </form>
+            </div>
+
+            <div class="instructor-list-container">
+                <h3>Existing Instructors</h3>
+                <% if (instructors.length > 0) { %>
+                    <table class="instructor-table">
+                        <thead>
+                            <tr>
+                                <th>Instructor Name</th>
+                                <th>Department</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% instructors.forEach(instructor => { %>
+                                <tr>
+                                    <td><%= instructor.name %></td>
+                                    <td><%= instructor.department_name %></td>
+                                    <td>
+                                        <form action="/instructors/delete/<%= instructor.id %>" method="POST" class="delete-form" style="display: inline;">
+                                            <button class="delete" type="submit">Delete</button>
+                                        </form>
+                                        <button class="update" onclick="openUpdateModal('<%= instructor.id %>', '<%= instructor.name %>', '<%= instructor.department_id %>')">Update</button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <p>No instructors found. Add a new instructor above.</p>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <!-- Update Modal -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeUpdateModal()">&times;</span>
+            <h3>Update Instructor</h3>
+            <form action="/instructors/update" method="POST" id="updateInstructorForm">
+                <input type="hidden" id="updateInstructorId" name="id">
+                <label for="updateInstructorName">Instructor Name:</label>
+                <input type="text" id="updateInstructorName" name="name" required>
+
+                <label for="updateDepartment">Select Department:</label>
+                <select id="updateDepartment" name="department_id" required>
+                    <option value="">Select Department</option>
+                    <% departments.forEach(department => { %>
+                        <option value="<%= department.id %>"><%= department.name %></option>
+                    <% }); %>
+                </select>
+
+                <button type="submit">Update Instructor</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/scripts_instructors.js"></script>
+    <script src="/server.js"></script>
+    <script>
+        function openUpdateModal(id, name, departmentId) {
+            document.getElementById('updateInstructorId').value = id;
+            document.getElementById('updateInstructorName').value = name;
+            document.getElementById('updateDepartment').value = departmentId;
+            document.getElementById('updateModal').style.display = 'flex';
+        }
+
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('updateModal')) {
+                closeUpdateModal();
+            }
+        }
+    </script>
+</body>
+</html>

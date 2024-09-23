@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Marks</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Link your custom styles if needed -->
+</head>
+<body>
+    <header>
+        <h1>Student Dashboard - View Marks</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/students">Manage Students</a></li>
+            <li><a href="/courses">Manage Courses</a></li>
+            <li><a href="/enrollments">Manage Enrollments</a></li>
+            <li><a href="/marks">View Marks</a></li>
+            
+        </ul>
+    </nav>
+
+    <main>
+        <section>
+            <h2>Marks Overview</h2>
+            <div class="marks-list-container">
+                <% if (students && students.length > 0) { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Course</th>
+                                <th>Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% students.forEach(student => { %>
+                                <tr>
+                                    <td><%= student.student_name %></td>
+                                    <td><%= student.course_name %></td>
+                                    <td><%= student.marks %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } else { %>
+                    <p>No marks found for students.</p>
+                <% } %>
+            </div>
+            
+        </section>
+    </main>
+
+    <!-- Optionally include your JavaScript files -->
+    <script src="/scripts_students.js"></script> <!-- Update based on your project's structure -->
+</body>
+</html>
